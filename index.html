@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사이트
+    </title>
+    <meta name="description" content="국립공주대학교 자율운항, 제어, AI 분야 연구원 프로필 페이지입니다.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Background Interactive Navigation Simulation Canvas -->
+    <canvas id="bg-canvas"></canvas>
+    <div class="glow-overlay"></div>
+
+    <div class="app-container">
+        <!-- Top Control Bar -->
+        <header class="top-nav">
+            <div class="brand-badge">
+                <span class="status-dot"></span>
+
+            </div>
+            <div class="nav-controls">
+
+                <button id="btn-theme-toggle" class="icon-btn" title="테마 전환">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Card Section -->
+        <main class="main-content">
+            <article class="profile-card glass-panel">
+                <!-- Status Badge -->
+                <div class="card-header-badge">
+                    <i class="fa-solid fa-compass-drafting"></i>
+                    <span>aiman</span>
+                </div>
+
+                <div class="profile-hero">
+                    <div class="avatar-wrapper">
+                        <img id="profile-avatar" src="avatar.jpg" alt="프로필 이미지">
+                        <div class="avatar-glow"></div>
+                        <div class="radar-sweep"></div>
+                    </div>
+
+                    <div class="profile-identity">
+                        <div class="name-row">
+                            <h1 id="display-name" class="profile-name">주동건</h1>
+                            <span class="verified-icon" title="검증되지 않음"><i class="fa-solid fa-circle-check"></i></span>
+                        </div>
+
+                        <!-- 1. 소속 (공주대 / 학과) -->
+                        <div class="affiliation-badge">
+                            <i class="fa-solid fa-building-columns"></i>
+                            <span id="display-affiliation">국립공주대학교 정보통신공학부</span>
+                        </div>
+
+                        <!-- 2. 한줄 소개 -->
+                        <p id="display-intro" class="profile-intro">
+                            "4학년 막학기 살다보니 벌써 4학년"
+                        </p>
+                    </div>
+                </div>
+
+                <hr class="divider">
+
+                <!-- 3. 관심 분야 (자율운항, 제어, AI ...) -->
+                <section class="section-block">
+                    <h2 class="section-title">
+                        <i class="fa-solid fa-microchip"></i>
+                        <span>관심 분야 (Interests & Focus)</span>
+                    </h2>
+                    <div id="display-interests" class="interests-tags">
+                        <span class="tag tag-primary"><i class="fa-solid fa-ship"></i> 앰프</span>
+                        <span class="tag tag-primary"><i class="fa-solid fa-ship"></i> 임베디드</span>
+                        <span class="tag tag-primary"><i class="fa-solid fa-ship"></i> 음향</span>
+
+                </section>
+
+                <div class="cards-grid">
+                    <!-- 4. 이 수업 이름 또는 링크 -->
+                    <section class="info-card glass-subpanel">
+                        <div class="info-card-header">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                            <h3>수업 정보</h3>
+                        </div>
+                        <div class="info-card-body">
+                            <span id="display-course-name" class="course-name">미래첨단기술의 이해</span>
+                            <a id="display-course-link" href="https://knulms.kongju.ac.kr/courses/52100" target="_blank"
+                                rel="noopener noreferrer" class="course-link-btn">
+                                <span>수업 페이지 이동</span>
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </a>
+                        </div>
+                    </section>
+                    <!-- 5. 이메일 또는 GitHub 링크 -->
+                    <section class="info-card glass-subpanel">
+                        <div class="info-card-header">
+                            <i class="fa-solid fa-link"></i>
+                            <h3>연락처 & GitHub</h3>
+                        </div>
+                        <div class="info-card-body links-stack">
+                            <div class="link-item">
+                                <i class="fa-solid fa-envelope"></i>
+                                <span id="display-email" class="link-text">wnehdrjs1114@naver.com</span>
+                                <button id="btn-copy-email" class="mini-copy-btn" title="이메일 복사">
+                                    <i class="fa-solid fa-copy"></i> 복사
+                                </button>
+                            </div>
+                            <a id="display-github" href="https://github.com/wnehdrjs-bot/wnehdrjs-bot.github.io"
+                                target="_blank" rel="noopener noreferrer" class="link-item interactive">
+                                <i class="fa-brands fa-github"></i>
+                                <span class="link-text">GitHub 프로필 방문</span>
+                                <i class="fa-solid fa-chevron-right arrow-icon"></i>
+                            </a>
+                        </div>
+                    </section>
+                </div>
+            </article>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>© 2026 Kongju National University • Autonomous Navigation & Control Systems</p>
+        </footer>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div id="modal-edit" class="modal-backdrop hidden">
+        <div class="modal-card glass-panel">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-sliders"></i> 프로필 정보 수정</h2>
+                <button id="btn-close-modal" class="modal-close-btn">&times;</button>
+            </div>
+            <form id="form-edit-profile" class="modal-form">
+                <div class="form-group">
+                    <label for="input-name">이름</label>
+                    <input type="text" id="input-name" required placeholder="홍길동">
+                </div>
+                <div class="form-group">
+                    <label for="input-affiliation">소속 (공주대 / 학과)</label>
+                    <input type="text" id="input-affiliation" required placeholder="국립공주대학교 스마트운항공학과">
+                </div>
+                <div class="form-group">
+                    <label for="input-intro">한줄소개</label>
+                    <textarea id="input-intro" rows="2" placeholder="연구 목표 및 소개글을 입력하세요."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="input-interests">관심 분야 (쉼표로 구분)</label>
+                    <input type="text" id="input-interests" placeholder="자율운항, 제어, AI, 경로최적화, 센서융합">
+                </div>
+                <div class="form-group">
+                    <label for="input-course-name">수업 이름</label>
+                    <input type="text" id="input-course-name" placeholder="2026학년도 자율운항 및 AI제어 시스템">
+                </div>
+                <div class="form-group">
+                    <label for="input-course-link">수업 링크 URL</label>
+                    <input type="url" id="input-course-link" placeholder="https://www.kongju.ac.kr">
+                </div>
+                <div class="form-group">
+                    <label for="input-email">이메일 주소</label>
+                    <input type="email" id="input-email" placeholder="student@kongju.ac.kr">
+                </div>
+                <div class="form-group">
+                    <label for="input-github">GitHub 링크 URL</label>
+                    <input type="url" id="input-github" placeholder="https://github.com/your-username">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" id="btn-reset-default" class="btn btn-secondary">기본값 복원</button>
+                    <button type="submit" class="btn btn-primary">저장하기</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast" class="toast hidden">
+        <i class="fa-solid fa-circle-check"></i>
+        <span id="toast-message">이메일 주소가 복사되었습니다!</span>
+    </div>
+
+    <!-- Custom JavaScript -->
+    <script src="script.js"></script>
+</body>
+
+</html>
