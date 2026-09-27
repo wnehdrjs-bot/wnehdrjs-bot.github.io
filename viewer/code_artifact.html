@@ -195,28 +195,34 @@
         }
 
         /* 메인 PDF 뷰어 프레임 컨테이너 */
-        <!-- PDF 뷰어 컨테이너 (object 태그로 교체) -->
-        <main class="pdf-frame-wrapper" id="pdfContainer">
-            <button type="button" id="btn-float-exit" class="fullscreen-exit-float">
-                <i class="fa-solid fa-compress"></i> 전체화면 종료
-            </button>
+        .pdf-frame-wrapper {
+            position: relative;
+            flex-grow: 1;
+            background: #0b0f19;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--glass-shadow);
+            display: flex;
+            flex-direction: column;
+            transition: border-color 0.3s;
+        }
 
-            <object id="pdfObject" data="./presentation.pdf" type="application/pdf" width="100%" height="100%">
-                <!-- 브라우저가 내부 렌더링을 차단했을 때 나타나는 폴백 UI -->
-                <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; color:#94a3b8; text-align:center; padding:2rem; gap:1rem;">
-                    <i class="fa-solid fa-file-pdf" style="font-size:3.5rem; color:#38bdf8;"></i>
-                    <p style="font-size:1.1rem; color:#f8fafc; font-weight:600;">브라우저 보안 설정으로 인해 내장 미리보기가 지원되지 않습니다.</p>
-                    <p style="font-size:0.9rem; color:#94a3b8;">아래 버튼을 눌러 슬라이드를 직접 열어보세요.</p>
-                    <a href="presentation.pdf" target="_blank" class="ctrl-btn primary" style="font-size:1rem; padding:0.75rem 1.5rem; margin-top:0.5rem;">
-                        <i class="fa-solid fa-arrow-up-right-from-square"></i> 슬라이드 원본 열기
-                    </a>
-                </div>
-            </object>
-        </main>
+        .pdf-frame-wrapper:hover {
+            border-color: var(--border-highlight);
+        }
+
+        .pdf-frame-wrapper iframe,
+        .pdf-frame-wrapper object {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background-color: #1a1e29;
+        }
 
         /* 풀스크린(전체화면) 활성화 스타일 */
-        :fullscreen.pdf-frame-wrapper,
-        :-webkit-full-screen.pdf-frame-wrapper {
+        .pdf-frame-wrapper:fullscreen,
+        .pdf-frame-wrapper:-webkit-full-screen {
             width: 100vw !important;
             height: 100vh !important;
             border-radius: 0 !important;
@@ -343,20 +349,25 @@
             </div>
         </header>
 
-        <!-- PDF 뷰어 컨테이너 (이 영역이 전체화면으로 전환됩니다) -->
+        <!-- PDF 뷰어 컨테이너 (정상 위치로 복구) -->
         <main class="pdf-frame-wrapper" id="pdfContainer">
             <!-- 전체화면 상태일 때 표시되는 탈출 플로팅 버튼 -->
             <button type="button" id="btn-float-exit" class="fullscreen-exit-float">
                 <i class="fa-solid fa-compress"></i> 전체화면 종료
             </button>
 
-            <!-- 브라우저 기본 내장 PDF 뷰어 -->
-            <!-- #toolbar=1&navpanes=0&view=FitH 옵션으로 적절한 크기로 렌더링 -->
-            <iframe id="pdfFrame"
-                src="presentation.pdf#toolbar=1&navpanes=0&view=FitH"
-                allow="fullscreen"
-                title="발표 슬라이드 문서">
-            </iframe>
+            <!-- object 태그로 안정적 렌더링 + 미지원 환경용 대체 링크 제공 -->
+            <object id="pdfObject" data="presentation.pdf" type="application/pdf" width="100%" height="100%">
+                <iframe id="pdfFrame" src="presentation.pdf" allow="fullscreen" title="발표 슬라이드 문서">
+                    <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; color:#94a3b8; text-align:center; padding:2rem; gap:1rem;">
+                        <i class="fa-solid fa-file-pdf" style="font-size:3rem; color:#38bdf8;"></i>
+                        <p style="font-size:1.1rem; color:#f8fafc; font-weight:600;">브라우저 설정으로 인해 내부 미리보기가 차단되었습니다.</p>
+                        <a href="presentation.pdf" target="_blank" class="ctrl-btn primary">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i> 슬라이드 바로 열기
+                        </a>
+                    </div>
+                </iframe>
+            </object>
         </main>
 
         <!-- 하단 정보 바 -->
@@ -379,17 +390,14 @@
         const fullscreenText = document.getElementById('fullscreen-text');
         const fullscreenIcon = btnFullscreen.querySelector('i');
 
-        // 전체화면 토글 함수
         function toggleFullscreen() {
             if (!document.fullscreenElement && !document.webkitFullscreenElement) {
-                // 전체화면 진입
                 if (pdfContainer.requestFullscreen) {
                     pdfContainer.requestFullscreen();
                 } else if (pdfContainer.webkitRequestFullscreen) {
                     pdfContainer.webkitRequestFullscreen();
                 }
             } else {
-                // 전체화면 해제
                 if (document.exitFullscreen) {
                     document.exitFullscreen();
                 } else if (document.webkitExitFullscreen) {
@@ -401,7 +409,6 @@
         btnFullscreen.addEventListener('click', toggleFullscreen);
         btnFloatExit.addEventListener('click', toggleFullscreen);
 
-        // 전체화면 상태 변화 감지하여 버튼 상태 업데이트
         function handleFullscreenChange() {
             const isFull = Boolean(document.fullscreenElement || document.webkitFullscreenElement);
             if (isFull) {
