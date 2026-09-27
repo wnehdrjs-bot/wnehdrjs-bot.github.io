@@ -227,6 +227,71 @@ body {
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
+/* ==========================================================================
+   Presentation Card & Button Additions
+   ========================================================================== */
+
+/* 발표자료 패널 강조 (필요 시 테두리나 배경 그라데이션 포인트) */
+.presentation-panel {
+    position: relative;
+    overflow: hidden;
+}
+
+.presentation-panel .info-card-header i {
+    color: var(--accent-emerald); /* PDF/발표 느낌을 살리는 에메랄드/시안 포인트 */
+}
+
+/* 발표자료 메인 버튼 스타일링 */
+.presentation-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.85rem 1.25rem;
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(52, 211, 153, 0.15));
+    border: 1px solid var(--border-highlight);
+    border-radius: 12px;
+    color: var(--text-main);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    transition: var(--tr-fast);
+}
+
+.presentation-btn i {
+    color: var(--primary-cyan);
+    font-size: 0.9rem;
+    transition: var(--tr-fast);
+}
+
+/* 하버 효과: 사이버틱한 글로우 및 화살표 밀기 인터랙션 */
+.presentation-btn:hover {
+    background: linear-gradient(135deg, var(--primary-cyan), var(--accent-emerald));
+    color: #070913;
+    border-color: transparent;
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+    transform: translateY(-2px);
+}
+
+.presentation-btn:hover i {
+    color: #070913;
+    transform: translateX(4px);
+}
+
+/* 라이트 모드 대응 */
+[data-theme="light"] .presentation-btn {
+    background: linear-gradient(135deg, rgba(2, 132, 199, 0.1), rgba(5, 150, 105, 0.1));
+    color: var(--text-main);
+}
+
+[data-theme="light"] .presentation-btn:hover {
+    color: #ffffff;
+}
+
+[data-theme="light"] .presentation-btn:hover i {
+    color: #ffffff;
+}
 
 /* Profile Hero Layout */
 .profile-hero {
