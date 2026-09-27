@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>발표자료 뷰어 | 자율주행 및 자율운항</title>
+    <meta name="description" content="자율주행 및 자율운항 핵심 기술 아키텍처 & 글로벌 규제 동향 발표 슬라이드 뷰어">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-dark: #070913;
+            --bg-card: rgba(15, 23, 42, 0.75);
+            --bg-card-sub: rgba(30, 41, 59, 0.6);
+            --border-color: rgba(56, 189, 248, 0.2);
+            --border-highlight: rgba(56, 189, 248, 0.5);
+            --primary-cyan: #38bdf8;
+            --primary-glow: rgba(56, 189, 248, 0.35);
+            --accent-emerald: #34d399;
+            --accent-purple: #818cf8;
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+            --text-muted: #64748b;
+            --font-heading: 'Outfit', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-code: 'Fira Code', monospace;
+            --glass-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            --glow-cyan: 0 0 25px rgba(56, 189, 248, 0.35);
+            --tr-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* 배경 은은한 방사형 글로우 */
+        .bg-glow {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 900px;
+            height: 900px;
+            background: radial-gradient(circle, var(--primary-glow) 0%, rgba(7, 9, 19, 0) 70%);
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        .viewer-page-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1.25rem 1.5rem 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            height: 100vh;
+        }
+
+        /* 상단 네비게이션 헤더 */
+        .viewer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.85rem 1.4rem;
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            box-shadow: var(--glass-shadow);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 600;
+            transition: var(--tr-fast);
+        }
+
+        .back-btn:hover {
+            background: var(--primary-glow);
+            border-color: var(--primary-cyan);
+            color: var(--primary-cyan);
+            transform: translateX(-3px);
+        }
+
+        .document-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 0.15rem;
+        }
+
+        .document-title {
+            font-family: var(--font-heading);
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .document-title i {
+            color: var(--accent-emerald);
+            font-size: 1rem;
+        }
+
+        .document-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-sub);
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .ctrl-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.5rem 0.95rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-main);
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--tr-fast);
+        }
+
+        .ctrl-btn:hover {
+            border-color: var(--primary-cyan);
+            background: var(--primary-glow);
+            color: var(--primary-cyan);
+            transform: translateY(-2px);
+        }
+
+        .ctrl-btn.primary {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.25), rgba(52, 211, 153, 0.25));
+            border-color: var(--border-highlight);
+            color: var(--primary-cyan);
+        }
+
+        .ctrl-btn.primary:hover {
+            background: var(--primary-cyan);
+            color: #070913;
+            box-shadow: var(--glow-cyan);
+        }
+
+        /* 메인 PDF 뷰어 프레임 컨테이너 */
+        .pdf-frame-wrapper {
+            position: relative;
+            flex-grow: 1;
+            background: #0b0f19;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--glass-shadow);
+            display: flex;
+            flex-direction: column;
+            transition: border-color 0.3s;
+        }
+
+        .pdf-frame-wrapper:hover {
+            border-color: var(--border-highlight);
+        }
+
+        .pdf-frame-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background-color: #1a1e29;
+        }
+
+        /* 풀스크린(전체화면) 활성화 스타일 */
+        :fullscreen.pdf-frame-wrapper,
+        :-webkit-full-screen.pdf-frame-wrapper {
+            width: 100vw !important;
+            height: 100vh !important;
+            border-radius: 0 !important;
+            border: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        /* 전체화면 모드 시 우상단에 작게 띄울 플로팅 해제 버튼 */
+        .fullscreen-exit-float {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            z-index: 1000;
+            display: none;
+            padding: 8px 14px;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-highlight);
+            color: var(--primary-cyan);
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: var(--glow-cyan);
+        }
+
+        :fullscreen .fullscreen-exit-float,
+        :-webkit-full-screen .fullscreen-exit-float {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* 하단 미니 상태바 */
+        .viewer-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.4rem 0.6rem;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            font-family: var(--font-code);
+        }
+
+        .footer-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .status-pulse {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent-emerald);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--accent-emerald);
+        }
+
+        /* 반응형 모바일 대응 */
+        @media (max-width: 768px) {
+            .viewer-page-container {
+                padding: 0.75rem;
+                gap: 0.75rem;
+            }
+
+            .viewer-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.8rem;
+                padding: 0.85rem 1rem;
+            }
+
+            .header-left {
+                justify-content: space-between;
+            }
+
+            .document-title {
+                font-size: 0.98rem;
+            }
+
+            .header-controls {
+                justify-content: flex-end;
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 배경 은은한 방사형 빛 -->
+    <div class="bg-glow"></div>
+
+    <div class="viewer-page-container">
+        <!-- 상단 헤더 & 컨트롤 바 -->
+        <header class="viewer-header">
+            <div class="header-left">
+                <a href="../" class="back-btn" title="메인 프로필로 돌아가기">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>홈으로</span>
+                </a>
+                <div class="document-meta">
+                    <h1 class="document-title">
+                        <i class="fa-solid fa-file-powerpoint"></i>
+                        자율주행 및 자율운항 핵심 기술 & 규제 동향
+                    </h1>
+                    <span class="document-subtitle">SAE J3016 • IMO MASS • Tesla • NVIDIA • UN/EU 법규</span>
+                </div>
+            </div>
+
+            <div class="header-controls">
+                <!-- 새 탭에서 열기 -->
+                <a id="link-external" href="./자율주행_및_자율운항_테크놀로지와_글로벌_레귤레이션.pdf" target="_blank"
+                    rel="noopener noreferrer" class="ctrl-btn" title="브라우저 새 창에서 원본 열기">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    <span>새 탭 열기</span>
+                </a>
+
+                <!-- 전체화면 토글 버튼 -->
+                <button type="button" id="btn-fullscreen" class="ctrl-btn primary" title="슬라이드 전체화면 전환">
+                    <i class="fa-solid fa-expand"></i>
+                    <span id="fullscreen-text">전체화면</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- PDF 뷰어 컨테이너 (이 영역이 전체화면으로 전환됩니다) -->
+        <main class="pdf-frame-wrapper" id="pdfContainer">
+            <!-- 전체화면 상태일 때 표시되는 탈출 플로팅 버튼 -->
+            <button type="button" id="btn-float-exit" class="fullscreen-exit-float">
+                <i class="fa-solid fa-compress"></i> 전체화면 종료
+            </button>
+
+            <!-- 브라우저 기본 내장 PDF 뷰어 -->
+            <!-- #toolbar=1&navpanes=0&view=FitH 옵션으로 적절한 크기로 렌더링 -->
+            <iframe id="pdfFrame"
+                src="./자율주행_및_자율운항_테크놀로지와_글로벌_레귤레이션.pdf#toolbar=1&navpanes=0&view=FitH"
+                allow="fullscreen"
+                title="발표 슬라이드 문서">
+            </iframe>
+        </main>
+
+        <!-- 하단 정보 바 -->
+        <footer class="viewer-footer">
+            <div class="footer-tag">
+                <span class="status-pulse"></span>
+                <span>SYSTEM ONLINE • Kongju National Univ</span>
+            </div>
+            <div>
+                <span>DOC REF: AUTONOMOUS-2026-SYS</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- 스크립트: Fullscreen API 제어 -->
+    <script>
+        const pdfContainer = document.getElementById('pdfContainer');
+        const btnFullscreen = document.getElementById('btn-fullscreen');
+        const btnFloatExit = document.getElementById('btn-float-exit');
+        const fullscreenText = document.getElementById('fullscreen-text');
+        const fullscreenIcon = btnFullscreen.querySelector('i');
+
+        // 전체화면 토글 함수
+        function toggleFullscreen() {
+            if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+                // 전체화면 진입
+                if (pdfContainer.requestFullscreen) {
+                    pdfContainer.requestFullscreen();
+                } else if (pdfContainer.webkitRequestFullscreen) {
+                    pdfContainer.webkitRequestFullscreen();
+                }
+            } else {
+                // 전체화면 해제
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                }
+            }
+        }
+
+        btnFullscreen.addEventListener('click', toggleFullscreen);
+        btnFloatExit.addEventListener('click', toggleFullscreen);
+
+        // 전체화면 상태 변화 감지하여 버튼 상태 업데이트
+        function handleFullscreenChange() {
+            const isFull = Boolean(document.fullscreenElement || document.webkitFullscreenElement);
+            if (isFull) {
+                fullscreenText.textContent = '전체화면 종료';
+                fullscreenIcon.className = 'fa-solid fa-compress';
+                btnFullscreen.classList.remove('primary');
+            } else {
+                fullscreenText.textContent = '전체화면';
+                fullscreenIcon.className = 'fa-solid fa-expand';
+                btnFullscreen.classList.add('primary');
+            }
+        }
+
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
+        document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    </script>
+</body>
+
+</html>
