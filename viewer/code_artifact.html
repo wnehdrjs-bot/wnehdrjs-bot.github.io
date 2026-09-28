@@ -194,6 +194,100 @@
             box-shadow: var(--glow-cyan);
         }
 
+        /* 뷰어 상단 대형 링크 버튼 스타일 */
+        .banner-link-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.8) 100%);
+            border: 1.5px solid var(--border-highlight);
+            border-radius: 16px;
+            text-decoration: none;
+            color: var(--text-main);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), 0 0 15px rgba(56, 189, 248, 0.15);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .banner-link-btn:hover {
+            border-color: var(--primary-cyan);
+            transform: translateY(-3px);
+            box-shadow: 0 14px 40px rgba(56, 189, 248, 0.25), 0 0 25px rgba(56, 189, 248, 0.4);
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(56, 189, 248, 0.15) 100%);
+        }
+
+        .banner-link-content {
+            display: flex;
+            align-items: center;
+            gap: 1.1rem;
+        }
+
+        .banner-link-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            background: rgba(56, 189, 248, 0.15);
+            border: 1px solid var(--border-highlight);
+            border-radius: 12px;
+            color: var(--primary-cyan);
+            font-size: 1.4rem;
+            flex-shrink: 0;
+            transition: transform 0.3s ease;
+        }
+
+        .banner-link-btn:hover .banner-link-icon {
+            transform: scale(1.08) rotate(5deg);
+            background: var(--primary-cyan);
+            color: #070913;
+        }
+
+        .banner-link-text {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .banner-link-title {
+            font-family: var(--font-heading);
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .banner-link-desc {
+            font-size: 0.85rem;
+            color: var(--text-sub);
+            font-family: var(--font-body);
+        }
+
+        .banner-link-action {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            background: rgba(56, 189, 248, 0.12);
+            border: 1px solid var(--primary-cyan);
+            border-radius: 10px;
+            color: var(--primary-cyan);
+            font-weight: 700;
+            font-size: 0.92rem;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .banner-link-btn:hover .banner-link-action {
+            background: var(--primary-cyan);
+            color: #070913;
+            box-shadow: var(--glow-cyan);
+        }
+
         /* 메인 PDF 뷰어 프레임 컨테이너 */
         .pdf-frame-wrapper {
             position: relative;
@@ -231,7 +325,7 @@
             margin: 0 !important;
         }
 
-        /* 전체화면 모드 시 우상단에 작게 띄울 플로팅 해제 버튼 */
+        /* 전체화면 모드 시 우상단 탈출 버튼 */
         .fullscreen-exit-float {
             position: absolute;
             top: 16px;
@@ -308,6 +402,18 @@
                 justify-content: flex-end;
                 flex-wrap: wrap;
             }
+
+            .banner-link-btn {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.85rem;
+                padding: 1rem;
+            }
+
+            .banner-link-action {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
@@ -349,7 +455,27 @@
             </div>
         </header>
 
-        <!-- PDF 뷰어 컨테이너 (정상 위치로 복구) -->
+        <!-- 뷰어 상단 대형 바로가기 버튼 배너 -->
+        <a href="https://fggege073.github.io/autonomy/" target="_blank" rel="noopener noreferrer" class="banner-link-btn" title="자율주행/자율운항 플랫폼 바로가기">
+            <div class="banner-link-content">
+                <div class="banner-link-icon">
+                    <i class="fa-solid fa-compass"></i>
+                </div>
+                <div class="banner-link-text">
+                    <div class="banner-link-title">
+                        자율주행 & 자율운항 종합 플랫폼 바로가기
+                        <i class="fa-solid fa-bolt" style="color: #f59e0b; font-size: 0.9rem;"></i>
+                    </div>
+                    <div class="banner-link-desc">fggege073.github.io/autonomy 웹 플랫폼으로 즉시 이동합니다.</div>
+                </div>
+            </div>
+            <div class="banner-link-action">
+                <span>사이트 열기</span>
+                <i class="fa-solid fa-arrow-right"></i>
+            </div>
+        </a>
+
+        <!-- 메인 PDF 뷰어 프레임 컨테이너 -->
         <main class="pdf-frame-wrapper" id="pdfContainer">
             <!-- 전체화면 상태일 때 표시되는 탈출 플로팅 버튼 -->
             <button type="button" id="btn-float-exit" class="fullscreen-exit-float">
